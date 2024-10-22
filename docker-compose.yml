@@ -1,0 +1,19 @@
+services:
+  php:
+    build: .
+    container_name: php-hello-world
+    volumes:
+      - ./src:/var/www/html   # Map the local "src" directory to the Apache web root
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf
+      - ./data:/var/www/html/data
+    ports:
+      - "8080:80"             # Expose port 80 in the container on port 8080 on your local machine
+    networks:
+      - hello_world_net       # Attach the service to a custom network
+    environment:
+      SECURITY_TOKEN: "187"
+    restart: always           # Always restart the container if it fails
+
+networks:
+  hello_world_net:
+    driver: bridge       # Create a custom bridge network

@@ -2,21 +2,27 @@
 
 class Challenge implements JsonSerializable{
     private $id;
-    private $habitName;
-    private $habitOccurrence;
-    private $habitNum;
-    private $board;
+    private $challenger;
     private $challengerID;
-    private $score;
+    private $lastMoverID;
+    private $board;
+    private $canPerformMove;
+    private $habitId;
+    private $habitName;
+    private $habitOccurrenceType;
+    private $habitOccurrenceNum;
 
-    public function __construct($id, $name, $occurrence, $num, $board, $challenger, $score) {
-        $this->id = $id;
-        $this->habitName = $name;
-        $this->habitOccurrence = $occurrence;
-        $this->habitNum = $num;
-        $this->board = $board;
-        $this->challengerID = $challenger;
-        $this->score = $score;
+    public function __construct($data) {
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
+    }
+
+    public function isValid(): bool
+    {
+        return isset($this->id, $this->challenger, $this->challengerID, $this->lastMoverID, $this->board, $this->canPerformMove, $this->habitId, $this->habitName, $this->habitOccurrenceType, $this->habitOccurrenceNum);
     }
 
     public function getId() {
@@ -31,11 +37,11 @@ class Challenge implements JsonSerializable{
         return get_object_vars($this);
     }
 
-    public static function fromJson($json) {
+    public static function fromJson($json): Challenge
+    {
         $data = json_decode($json, true);
-        return new self($data['id'], $data['habitName'], $data['habitOccurrence'], $data['habitNum'], $data['board'], $data['challengerID'], $data['score']);
+        return new self($data);
     }
-
 
 }
 ?>

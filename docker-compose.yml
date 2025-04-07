@@ -13,6 +13,7 @@ services:
     environment:
       SECURITY_TOKEN: "187"
     restart: always           # Always restart the container if it fails
+    user: "www-data"
 
 networks:
   hello_world_net:
